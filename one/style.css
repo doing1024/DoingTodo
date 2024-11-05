@@ -1,0 +1,13 @@
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+.header,.footer {
+  width: 100%;
+  background-color: #225577;
+}
+.body {
+  width: 100%;
+  background-color: #0a0908;
+}
