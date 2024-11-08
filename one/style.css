@@ -3,11 +3,59 @@ body {
   flex-direction: column;
   width: 100vw;
 }
-.header,.footer {
+.header,
+.footer {
   width: 100%;
   background-color: #225577;
 }
 .body {
   width: 100%;
   background-color: #0a0908;
+}
+.add,
+.titler {
+  display: inline;
+}
+.add {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.createBox {
+  position: fixed;
+  width: 50vw;
+  height: 50vh;
+  left: 25vw;
+  top: 25vh;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+button {
+  width: 10% !important;
+  height: 10% !important;
+  color: white;
+  background-color: cornflowerblue;
+  border-radius: 3px;
+  border-width: 0;
+  outline: none;
+  font-size: 17px;
+  text-align: center;
+  cursor: pointer;
+}
+button:hover {
+  /*鼠标移动时的颜色变化*/
+  background-color: antiquewhite;
+}
+.createForm {
+  font-size: 2vh;
+}
+.todo {
+  background-color: cornflowerblue;
+  display: flex;
+  flex-direction: row;
+}
+.icons{
+    display: flex;
+  flex-direction: row;
 }
