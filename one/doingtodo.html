@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>DoingTodo——让想法涌现的Todo</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+        background-color: #336688;
+        margin: 0;
+      }
+      .header,
+      .footer {
+        background-color: #225577;
+        width: 100vw;
+        left: 0;
+        position: relative;
+      }
+      .header {
+        flex-grow: 1;
+      }
+      .footer {
+        flex-grow: 2;
+      }
+      .bodier {
+        flex-grow: 7;
+      }
+      .add,
+      .titler {
+        display: inline;
+      }
+      .add {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .createBox {
+        position: fixed;
+        width: 50vw;
+        height: 50vh;
+        left: 25vw;
+        top: 25vh;
+        background-color: #fff;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        display: none;
+      }
+      button {
+        width: 10% !important;
+        height: 10% !important;
+        color: white;
+        background-color: cornflowerblue;
+        border-radius: 3px;
+        border-width: 0;
+        outline: none;
+        font-size: 17px;
+        text-align: center;
+        cursor: pointer;
+      }
+      button:hover {
+        /*鼠标移动时的颜色变化*/
+        background-color: antiquewhite;
+      }
+      .createForm {
+        font-size: 2vh;
+      }
+      .todo {
+        background-color: cornflowerblue;
+        display: flex;
+        flex-direction: row;
+      }
+      .icons {
+        display: flex;
+        flex-direction: row;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div class="header">
+      <!-- 可编辑的标题 -->
+      <h1 class="titler" contenteditable="true"></h1>
+      <!-- 加号图标 -->
+      <div class="add">
+        <svg
+          style="width: 30px; height: 30px"
+          t="1730956469266"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1482"
+        >
+          <path
+            d="M514.048 62.464q93.184 0 175.616 35.328t143.872 96.768 96.768 143.872 35.328 175.616q0 94.208-35.328 176.128t-96.768 143.36-143.872 96.768-175.616 35.328q-94.208 0-176.64-35.328t-143.872-96.768-96.768-143.36-35.328-176.128q0-93.184 35.328-175.616t96.768-143.872 143.872-96.768 176.64-35.328zM772.096 576.512q26.624 0 45.056-18.944t18.432-45.568-18.432-45.056-45.056-18.432l-192.512 0 0-192.512q0-26.624-18.944-45.568t-45.568-18.944-45.056 18.944-18.432 45.568l0 192.512-192.512 0q-26.624 0-45.056 18.432t-18.432 45.056 18.432 45.568 45.056 18.944l192.512 0 0 191.488q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568l0-191.488 192.512 0z"
+            p-id="1483"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <!-- 装载条目的容器 -->
+    <div class="bodier"></div>
+    <!-- 页尾 -->
+    <div class="footer">
+      <a href="https://todo.doing1024.us.kg/">DoingTodo</a><br />
+      Made by <a href="https://github.com/doing1024">Doing</a>
+    </div>
+    <!-- 创建/编辑时的弹窗 -->
+    <div class="createBox">
+      <div class="createForm">
+        <div class="name">名称：<input type="text" class="nameText" /></div>
+        <div class="marks">
+          优先级（数字越小优先级越高）<input
+            type="number"
+            class="marksNumber"
+            value="0"
+          />
+        </div>
+        <div class="create">
+          创建日期：<input type="date" class="createDate" />
+        </div>
+        <div class="deadline">
+          结束日期：<input type="date" class="deadDate" />
+        </div>
+        <textarea class="info" placeholder="有什么灵感?"></textarea>
+        <div class="button">
+          <button class="createOk">确认</button
+          ><button class="createCancel">取消</button>
+        </div>
+      </div>
+    </div>
+    <!-- 引入js -->
+    <script>
+      // 标题
+      var defaultTitle = "DoingTodo"; // 默认标题
+      var title = localStorage.getItem("title"); // 获取储存
+      var titler = document.getElementsByClassName("titler")[0]; // 标题容器h1
+      if (title == null) {
+        // 如果不存在
+        localStorage.setItem("title", defaultTitle); // 设为默认标题
+        title = defaultTitle;
+      }
+      titler.innerText = title;
+      titler.addEventListener("input", function () {
+        //如果被修改，存储它！
+        if (titler.innerText.indexOf("\n") != -1) {
+          titler.innerText = titler.innerText.replace("\n", ""); // 禁止存在回车
+        }
+        localStorage.setItem("title", titler.innerText); // 存储
+        // console.log("custom title!");
+      });
+      var Todo = function (string) {
+        // Todo条目类
+        // 将string解析并定义属性
+        if (typeof string == "string") {
+          var todoJson = JSON.parse(string); // 如果是字符串，进行解析
+        } else var todoJson = string; // 否则，直接赋值
+        // 定义属性
+        var name = todoJson["name"], // 名称
+          info = todoJson["info"], // 永辉灵感
+          marks = Number(todoJson["marks"]), // 优先级
+          createTime = new Date(todoJson["createTime"]), // 创建日期
+          deadTime = new Date(todoJson["deadTime"]); // 截止日期
+        // 返回object
+        return {
+          name: name,
+          info: info,
+          marks: marks,
+          createTime: createTime,
+          deadTime: deadTime,
+          del: false,
+          id: -1,
+        };
+      };
+      var createClose = function () {
+        // 隐藏创建弹窗
+        document.querySelector(".createBox").style.display = "none";
+      };
+      var createOpen = function () {
+        // 显示创建弹窗
+        document.querySelector(".createBox").style.display = "flex";
+        // 设置默认日期为今天
+        document.querySelector(".createDate").valueAsDate = new Date();
+        document.querySelector(".deadDate").valueAsDate = new Date();
+      };
+      var formatDateTime = function (date) {
+        // 格式化日期
+        var date = new Date(date); // 转换
+        var y = date.getFullYear(); // 年
+        var m = date.getMonth() + 1; // 月
+        var d = date.getDate(); // 日
+        // 补0
+        m = m < 10 ? "0" + m : m; // 月
+        d = d < 10 ? "0" + d : d; // 日
+        return y + "-" + m + "-" + d; // 返回，穿插连字符
+      };
+      var sortTodos = function (a, b) {
+        // 条目的排序标准（数字越小越靠前）
+        /*sort的排序函数（备忘）：
+     负数：a小于b
+     0：a等于b
+    正数：a大于b*/
+        return a.marks - b.marks;
+      };
+      var showTodos = function () {
+        // 如果存储中todos没有被创建过，创建一个空的
+        if (localStorage.getItem("todos") == null) {
+          localStorage.setItem("todos", "[]");
+        }
+        // 读取、解析
+        var todos = JSON.parse(localStorage.getItem("todos"));
+        // 排序并重新储存
+        todos.sort(sortTodos);
+        localStorage.setItem("todos", JSON.stringify(todos));
+        for (var i = 0; i < todos.length; ++i) {
+          if (todos[i].del) {
+            // TODO 此处为软删除，为避免堆积数据，需要实现硬删除
+            continue; // 如果已经被删除，跳过
+          }
+          // 该条目的DOM
+          var todoDom = document.createElement("div");
+          todoDom.id = i; // 设置id属性，方便删除
+          todoDom.className = "todo"; // 设置Class
+          todoDom.innerHTML = ` 
+<div>
+  <p>${todos[i].name}</p>
+  <p>创建时间：${formatDateTime(todos[i].createTime)}</p>
+  <p>结束时间：${formatDateTime(todos[i].deadTime)}</p>
+  <div class="icons"></div>
+</div>
+<div>${todos[i].info}</div>`; // 条目的html
+          var editButton = document.createElement("div"); // 编辑按钮（容器）
+          editButton.innerHTML = `<svg t="1731072964474" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4279" data-darkreader-inline-fill="" width="30" height="30"><path d="M870.4 909.409524H85.333333V124.342857H653.409524a36.571429 36.571429 0 1 0 0-73.142857H48.761905a36.571429 36.571429 0 0 0-36.571429 36.571429v858.209523c0 20.187429 16.384 36.571429 36.571429 36.571429h858.209524a36.571429 36.571429 0 0 0 36.571428-36.571429V341.333333a36.571429 36.571429 0 1 0-73.142857 0v568.076191z" fill="#FFA000" p-id="4280" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #c9830c;"></path><path d="M503.710476 585.191619l510.585905-510.537143A36.571429 36.571429 0 0 0 962.608762 22.918095L452.022857 533.455238a36.571429 36.571429 0 0 0 51.687619 51.736381z" fill="#FFA000" p-id="4281" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #c9830c;"></path></svg>`;
+          var delButton = document.createElement("div"); // 删除按钮（容器）
+          delButton.innerHTML = `<svg t="1731071304285" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4285" data-darkreader-inline-fill="" width="30" height="30" ><path d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z" fill="#FA596F" p-id="4286" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #970b1c;"></path></svg>`;
+          // 将按钮加入条目
+          todoDom.querySelector(".icons").appendChild(delButton);
+          todoDom.querySelector(".icons").appendChild(editButton);
+          delButton.addEventListener("click", function () {
+            var fa = this.parentNode.parentNode.parentNode;
+            var todos = JSON.parse(localStorage.getItem("todos"));
+            todos[fa.id].del = true;
+            localStorage.setItem("todos", JSON.stringify(todos));
+            fa.remove();
+          }); // 删除按钮点击事件
+          editButton.addEventListener("click", function () {
+            createOpen();
+            var todos = JSON.parse(localStorage.getItem("todos"));
+            var fa = this.parentNode.parentNode.parentNode;
+            document.querySelector(".nameText").value = todos[fa.id].name;
+            document.querySelector(".marksNumber").value = todos[fa.id].marks;
+            document.querySelector(".createDate").valueAsDate = new Date(
+              todos[fa.id].createTime,
+            );
+            document.querySelector(".deadDate").valueAsDate = new Date(
+              todos[fa.id].deadTime,
+            );
+            var todos = JSON.parse(localStorage.getItem("todos"));
+            todos[fa.id].del = true;
+            localStorage.setItem("todos", JSON.stringify(todos));
+            fa.remove();
+          }); // 编辑按钮点击事件
+          document.querySelector(".bodier").appendChild(todoDom); // 将该条目加入bodier
+        }
+      };
+      var addTodo = function (todo) {
+        if (localStorage.getItem("todos") == null) {
+          localStorage.setItem("todos", "[]");
+        }
+        var todos = JSON.parse(localStorage.getItem("todos"));
+        todos.push(todo);
+        localStorage.setItem("todos", JSON.stringify(todos));
+        showTodos();
+      };
+      var clickAdd = function () {
+        var todo = Todo({
+          name: document.querySelector(".nameText").value,
+          info: document.querySelector(".info").value,
+          marks: document.querySelector(".marksNumber").value,
+          createTime: document.querySelector(".createDate").valueAsDate,
+          deadTime: document.querySelector(".deadDate").valueAsDate,
+        });
+        addTodo(todo);
+        createClose();
+      };
+      document.querySelector(".add").addEventListener("click", createOpen);
+      document.querySelector(".createOk").addEventListener("click", clickAdd);
+      document
+        .querySelector(".createCancel")
+        .addEventListener("click", createClose);
+      showTodos();
+    </script>
+  </body>
+</html>
