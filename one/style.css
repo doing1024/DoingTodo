@@ -1,26 +1,51 @@
+/*页面*/
 body {
   display: flex;
   flex-direction: column;
   width: 100vw;
+  height: 100vh;
+  background-color: #336688;
+  margin: 0;
 }
+/*头尾*/
 .header,
 .footer {
-  width: 100%;
   background-color: #225577;
+  width: 100vw;
+  left: 0;
+  position: relative;
 }
-.body {
-  width: 100%;
-  background-color: #0a0908;
+.header {
+  flex-grow: 1;
+}
+.footer {
+  flex-grow: 1;
+}
+.bodier {
+  flex-grow: 8;
 }
 .add,
+.reset,
+.delete,
 .titler {
   display: inline;
 }
-.add {
+.add,
+.reset,
+.delete {
   position: absolute;
   top: 10px;
+}
+.add {
   right: 10px;
 }
+.reset {
+  right: 50px;
+}
+.delete {
+  right: 90px;
+}
+/* 创建时的弹窗 */
 .createBox {
   position: fixed;
   width: 50vw;
@@ -30,8 +55,16 @@ body {
   background-color: #fff;
   justify-content: center;
   align-items: center;
+  z-index: 999;
+  display: none;
 }
-button {
+/* 创建时的表单 */
+.createForm {
+  font-size: 2vh;
+}
+/* 按钮样式 */
+.createOk,
+.createCancel {
   width: 10% !important;
   height: 10% !important;
   color: white;
@@ -43,19 +76,21 @@ button {
   text-align: center;
   cursor: pointer;
 }
-button:hover {
-  /*鼠标移动时的颜色变化*/
+.createOk:hover,
+.createCancel:hover {
   background-color: antiquewhite;
 }
-.createForm {
-  font-size: 2vh;
-}
+/* 条目 */
 .todo {
   background-color: cornflowerblue;
   display: flex;
   flex-direction: row;
 }
-.icons{
-    display: flex;
+/* 条目图标组 */
+.icons {
+  display: flex;
   flex-direction: row;
+}
+.blank {
+  width: 100px;
 }

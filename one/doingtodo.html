@@ -194,7 +194,7 @@ body {
           rel="stylesheet"
         />
 
-        <div id="editor"></div>
+        <div class="editor"></div>
         <div class="button">
           <button class="createOk">确认</button
           ><button class="createCancel">取消</button>
@@ -229,7 +229,7 @@ var Todo = function (string) {
   } else var todoJson = string; // 否则，直接赋值
   // 定义属性
   var name = todoJson["name"], // 名称
-    info = todoJson["info"], // 永辉灵感
+    info = todoJson["info"], // 灵感
     marks = Number(todoJson["marks"]), // 优先级
     createTime = new Date(todoJson["createTime"]), // 创建日期
     deadTime = new Date(todoJson["deadTime"]); // 截止日期
@@ -244,7 +244,7 @@ var Todo = function (string) {
     id: -1,
   };
 };
-const quill = new Quill("#editor", {
+const quill = new Quill(".editor", {
   theme: "snow",
 });
 var createClose = function () {
@@ -287,7 +287,6 @@ var showTodos = function () {
   var todos = JSON.parse(localStorage.getItem("todos"));
   // 排序并重新储存
   todos.sort(sortTodos);
-  localStorage.setItem("todos", JSON.stringify(todos));
   for (var i = 0; i < todos.length; ++i) {
     if (todos[i].del) {
       // TODO 此处为软删除，为避免堆积数据，需要实现硬删除
@@ -296,9 +295,10 @@ var showTodos = function () {
     // 该条目的DOM
     var todoDom = document.createElement("div");
     todoDom.id = i; // 设置id属性，方便删除
+    todos[i].id = i;
     todoDom.className = "todo"; // 设置Class
     todoDom.innerHTML = ` 
-<div>
+<div >
   <p>${todos[i].name}</p>
   <p>创建时间：${formatDateTime(todos[i].createTime)}</p>
   <p>结束时间：${formatDateTime(todos[i].deadTime)}</p>
@@ -333,9 +333,10 @@ var showTodos = function () {
       );
       createOpen();
       edit = fa.id;
-    }); // 编辑按钮点击事件
+    }); // 编辑按钮点击事件;
     document.querySelector(".bodier").appendChild(todoDom); // 将该条目加入bodier
   }
+  localStorage.setItem("todos", JSON.stringify(todos));
 };
 var addTodo = function (todo) {
   if (localStorage.getItem("todos") == null) {
@@ -381,6 +382,39 @@ document.querySelector(".delete").addEventListener("click", resetTodos); // 重�
 document.querySelector(".createOk").addEventListener("click", clickAdd); // ok
 document.querySelector(".createCancel").addEventListener("click", createClose); // cancel
 showTodos();
+
+// 定期检查是否到期
+var checkBeginDate = function () {
+  if (localStorage.getItem("todos") == null) {
+    localStorage.setItem("todos", "[]");
+  }
+  // 读取、解析
+  var todos = JSON.parse(localStorage.getItem("todos"));
+  for (var i = 0; i < todos.length; ++i) {
+    if (todos[i].del) continue;
+    var date = new Date(todos[i].createTime);
+    if (new Date() > date) alert(`任务${todos[i].name}要开始啦！`);
+  }
+};
+// 定期检查是否到期
+var checkEndDate = function () {
+  if (localStorage.getItem("todos") == null) {
+    localStorage.setItem("todos", "[]");
+  }
+  // 读取、解析
+  var todos = JSON.parse(localStorage.getItem("todos"));
+  for (var i = 0; i < todos.length; ++i) {
+    if (todos[i].del) continue;
+    var date = new Date(todos[i].deadTime);
+    if (new Date() > date) alert(`任务${todos[i].name}要到期啦！`);
+  }
+};
+checkBeginDate();
+checkEndDate();
+var timer = window.setInterval(function () {
+  checkBeginDate();
+  checkEndDate();
+}, 1000 * 60);
 </script>
   </body>
 </html>

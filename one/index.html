@@ -5,15 +5,19 @@
     <meta charset="utf-8" />
     <title>DoingTodo——让想法涌现的Todo</title>
     <link rel="stylesheet" type="text/css" href="style.css" charset="utf-8" />
+    <!-- Include stylesheet -->
   </head>
   <body>
+    <!-- 头部 -->
     <div class="header">
+      <!-- 可编辑的标题 -->
       <h1 class="titler" contenteditable="true"></h1>
+      <!-- 加号图标 -->
       <div class="add">
         <svg
-          style="width: 30px; height: 30px"
+          width="30"
+          height="30"
           t="1730956469266"
-          class="icon"
           viewBox="0 0 1024 1024"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -25,13 +29,54 @@
           ></path>
         </svg>
       </div>
+      <div class="reset">
+        <svg
+          t="1731110299441"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="4236"
+          data-darkreader-inline-fill=""
+          width="30"
+          height="30"
+        >
+          <path
+            d="M715.7248 241.6896l-59.32032 73.04704 308.70016 28.62592-92.27776-295.168-73.3696 90.40384a464.29696 464.29696 0 0 0-275.9936-90.40384c-256.768 0-464.96256 207.616-464.96256 463.6672 0 256.11776 208.19456 463.6672 464.96256 463.6672 192.61952 0.16896 365.40928-118.41536 434.52416-298.20416a66.18112 66.18112 0 0 0-38.272-85.48352c-34.24256-13.08672-72.62208 4.00384-85.80096 38.20544-49.36192 128.45056-172.78464 213.17632-310.38976 213.05856-183.45984 0-332.20608-148.29568-332.20608-331.2384 0-182.87616 148.74624-331.17696 332.20608-331.17696 70.1952-0.00512 136.832 21.75488 192.19968 60.99968"
+            fill=""
+            p-id="4237"
+          ></path>
+        </svg>
+      </div>
+      <div class="delete">
+        <svg
+          t="1731071304285"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="4285"
+          data-darkreader-inline-fill=""
+          width="30"
+          height="30"
+        >
+          <path
+            d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z"
+            fill="#FA596F"
+            p-id="4286"
+            data-darkreader-inline-fill=""
+            style="--darkreader-inline-fill: #970b1c"
+          ></path>
+        </svg>
+      </div>
     </div>
+    <!-- 装载条目的容器 -->
     <div class="bodier"></div>
+    <!-- 页尾 -->
     <div class="footer">
       <a href="https://todo.doing1024.us.kg/">DoingTodo</a><br />
       Made by <a href="https://github.com/doing1024">Doing</a>
     </div>
-    <div class="createBox" style="z-index: 999; display: none">
+    <!-- 创建/编辑时的弹窗 -->
+    <div class="createBox">
       <div class="createForm">
         <div class="name">名称：<input type="text" class="nameText" /></div>
         <div class="marks">
@@ -47,13 +92,20 @@
         <div class="deadline">
           结束日期：<input type="date" class="deadDate" />
         </div>
-        <textarea class="info" placeholder="有什么灵感?"></textarea>
+        <script src="https://unpkg.com/quill@2.0.2/dist/quill.js"></script>
+        <link
+          href="https://unpkg.com/quill@2.0.2/dist/quill.snow.css"
+          rel="stylesheet"
+        />
+
+        <div class="editor"></div>
         <div class="button">
           <button class="createOk">确认</button
           ><button class="createCancel">取消</button>
         </div>
       </div>
     </div>
+    <!-- 引入js -->
     <script src="script.js"></script>
   </body>
 </html>
