@@ -3,7 +3,7 @@ import kv from "@vercel/kv";
 
 export async function get(key) {
   const prefs = await kv.get(key);
-  return prefs || {};
+  return prefs || null;
 }
 
 export async function update(key, value) {
