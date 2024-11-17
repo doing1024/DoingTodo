@@ -1,234 +1,145 @@
 <!doctype html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="utf-8" />
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="utf-8"/>
     <title>DoingTodo——让想法涌现的Todo</title>
-    <style>/*页面*/
-body {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  background-color: #336688;
-  margin: 0;
-}
-/*头尾*/
-.header,
-.footer {
-  background-color: #225577;
-  width: 100vw;
-  left: 0;
-  position: relative;
-}
-.header {
-  flex-grow: 1;
-}
-.footer {
-  flex-grow: 1;
-}
-.bodier {
-  flex-grow: 8;
-}
-.add,
-.reset,
-.delete,
-.titler {
-  display: inline;
-}
-.add,
-.reset,
-.delete {
-  position: absolute;
-  top: 10px;
-}
-.add {
-  right: 10px;
-}
-.reset {
-  right: 50px;
-}
-.delete {
-  right: 90px;
-}
-/* 创建时的弹窗 */
-.createBox {
-  position: fixed;
-  width: 50vw;
-  height: 50vh;
-  left: 25vw;
-  top: 25vh;
-  background-color: #fff;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  display: none;
-}
-/* 创建时的表单 */
-.createForm {
-  font-size: 2vh;
-}
-/* 按钮样式 */
-.createOk,
-.createCancel {
-  width: 10% !important;
-  height: 10% !important;
-  color: white;
-  background-color: cornflowerblue;
-  border-radius: 3px;
-  border-width: 0;
-  outline: none;
-  font-size: 17px;
-  text-align: center;
-  cursor: pointer;
-}
-.createOk:hover,
-.createCancel:hover {
-  background-color: antiquewhite;
-}
-/* 条目 */
-.todo {
-  background-color: cornflowerblue;
-  display: flex;
-  flex-direction: row;
-}
-/* 条目图标组 */
-.icons {
-  display: flex;
-  flex-direction: row;
-}
-.blank {
-  width: 100px;
-}
-</style>
-    <!-- Include stylesheet -->
-  </head>
-  <body>
-    <!-- 头部 -->
-    <div class="header">
-      <!-- 可编辑的标题 -->
-      <h1 class="titler" contenteditable="true"></h1>
-      <!-- 加号图标 -->
-      <div class="add">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<!-- 头部 -->
+<div class="header">
+    <!-- 可编辑的标题 -->
+    <h1 class="titler" contenteditable="true"></h1>
+    <!-- 加号图标 -->
+    <div class="add">
         <svg
-          width="30"
-          height="30"
-          t="1730956469266"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="1482"
+                width="30"
+                height="30"
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            d="M514.048 62.464q93.184 0 175.616 35.328t143.872 96.768 96.768 143.872 35.328 175.616q0 94.208-35.328 176.128t-96.768 143.36-143.872 96.768-175.616 35.328q-94.208 0-176.64-35.328t-143.872-96.768-96.768-143.36-35.328-176.128q0-93.184 35.328-175.616t96.768-143.872 143.872-96.768 176.64-35.328zM772.096 576.512q26.624 0 45.056-18.944t18.432-45.568-18.432-45.056-45.056-18.432l-192.512 0 0-192.512q0-26.624-18.944-45.568t-45.568-18.944-45.056 18.944-18.432 45.568l0 192.512-192.512 0q-26.624 0-45.056 18.432t-18.432 45.056 18.432 45.568 45.056 18.944l192.512 0 0 191.488q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568l0-191.488 192.512 0z"
-            p-id="1483"
-          ></path>
+            <path
+                    d="M514.048 62.464q93.184 0 175.616 35.328t143.872 96.768 96.768 143.872 35.328 175.616q0 94.208-35.328 176.128t-96.768 143.36-143.872 96.768-175.616 35.328q-94.208 0-176.64-35.328t-143.872-96.768-96.768-143.36-35.328-176.128q0-93.184 35.328-175.616t96.768-143.872 143.872-96.768 176.64-35.328zM772.096 576.512q26.624 0 45.056-18.944t18.432-45.568-18.432-45.056-45.056-18.432l-192.512 0 0-192.512q0-26.624-18.944-45.568t-45.568-18.944-45.056 18.944-18.432 45.568l0 192.512-192.512 0q-26.624 0-45.056 18.432t-18.432 45.056 18.432 45.568 45.056 18.944l192.512 0 0 191.488q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568l0-191.488 192.512 0z"
+            ></path>
         </svg>
-      </div>
-      <div class="reset">
-        <svg
-          t="1731110299441"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="4236"
-          data-darkreader-inline-fill=""
-          width="30"
-          height="30"
-        >
-          <path
-            d="M715.7248 241.6896l-59.32032 73.04704 308.70016 28.62592-92.27776-295.168-73.3696 90.40384a464.29696 464.29696 0 0 0-275.9936-90.40384c-256.768 0-464.96256 207.616-464.96256 463.6672 0 256.11776 208.19456 463.6672 464.96256 463.6672 192.61952 0.16896 365.40928-118.41536 434.52416-298.20416a66.18112 66.18112 0 0 0-38.272-85.48352c-34.24256-13.08672-72.62208 4.00384-85.80096 38.20544-49.36192 128.45056-172.78464 213.17632-310.38976 213.05856-183.45984 0-332.20608-148.29568-332.20608-331.2384 0-182.87616 148.74624-331.17696 332.20608-331.17696 70.1952-0.00512 136.832 21.75488 192.19968 60.99968"
-            fill=""
-            p-id="4237"
-          ></path>
-        </svg>
-      </div>
-      <div class="delete">
-        <svg
-          t="1731071304285"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="4285"
-          data-darkreader-inline-fill=""
-          width="30"
-          height="30"
-        >
-          <path
-            d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z"
-            fill="#FA596F"
-            p-id="4286"
-            data-darkreader-inline-fill=""
-            style="--darkreader-inline-fill: #970b1c"
-          ></path>
-        </svg>
-      </div>
     </div>
-    <!-- 装载条目的容器 -->
-    <div class="bodier"></div>
-    <!-- 页尾 -->
-    <div class="footer">
-      <a href="https://todo.doing1024.us.kg/">DoingTodo</a><br />
-      Made by <a href="https://github.com/doing1024">Doing</a>
+    <div class="reset">
+        <svg
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                data-darkreader-inline-fill=""
+                width="30"
+                height="30"
+        >
+            <path
+                    d="M715.7248 241.6896l-59.32032 73.04704 308.70016 28.62592-92.27776-295.168-73.3696 90.40384a464.29696 464.29696 0 0 0-275.9936-90.40384c-256.768 0-464.96256 207.616-464.96256 463.6672 0 256.11776 208.19456 463.6672 464.96256 463.6672 192.61952 0.16896 365.40928-118.41536 434.52416-298.20416a66.18112 66.18112 0 0 0-38.272-85.48352c-34.24256-13.08672-72.62208 4.00384-85.80096 38.20544-49.36192 128.45056-172.78464 213.17632-310.38976 213.05856-183.45984 0-332.20608-148.29568-332.20608-331.2384 0-182.87616 148.74624-331.17696 332.20608-331.17696 70.1952-0.00512 136.832 21.75488 192.19968 60.99968"
+                    fill=""
+            ></path>
+        </svg>
     </div>
-    <!-- 创建/编辑时的弹窗 -->
-    <div class="createBox">
-      <div class="createForm">
-        <div class="name">名称：<input type="text" class="nameText" /></div>
+    <div class="delete">
+        <svg
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                data-darkreader-inline-fill=""
+                width="30"
+                height="30"
+        >
+            <path
+                    d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z"
+                    fill="#FA596F"
+                    data-darkreader-inline-fill=""
+                    style="--darkreader-inline-fill: #970b1c;"
+            ></path>
+        </svg>
+    </div>
+</div>
+<!-- 装载条目的容器 -->
+<div class="bodier"></div>
+<!-- 页尾 -->
+<div class="footer">
+    <a href="https://todo.doing1024.us.kg/">DoingTodo</a><br/>
+    Made by <a href="https://github.com/doing1024">Doing</a>
+</div>
+<!-- 创建/编辑时的弹窗 -->
+<div class="createBox">
+    <div class="createForm">
+        <div class="name"><label>
+            名称：
+            <input type="text" class="nameText"/>
+        </label></div>
         <div class="marks">
-          优先级（数字越小优先级越高）<input
-            type="number"
-            class="marksNumber"
-            value="0"
-          />
+            <label>
+                优先级（数字越小优先级越高）
+                <input
+                        type="number"
+                        class="marksNumber"
+                        value="0"
+                />
+            </label>
         </div>
         <div class="create">
-          创建日期：<input type="date" class="createDate" />
+            <label>
+                开始日期：
+                <input type="date" class="createDate"/>
+            </label>
         </div>
         <div class="deadline">
-          结束日期：<input type="date" class="deadDate" />
+            <label>
+                结束日期：
+                <input type="date" class="deadDate"/>
+            </label>
         </div>
         <script src="https://unpkg.com/quill@2.0.2/dist/quill.js"></script>
         <link
-          href="https://unpkg.com/quill@2.0.2/dist/quill.snow.css"
-          rel="stylesheet"
+                href="https://unpkg.com/quill@2.0.2/dist/quill.snow.css"
+                rel="stylesheet"
         />
 
         <div class="editor"></div>
         <div class="button">
-          <button class="createOk">确认</button
-          ><button class="createCancel">取消</button>
+            <button class="createOk">确认
+            </button
+            >
+            <button class="createCancel">取消</button>
         </div>
-      </div>
     </div>
-    <!-- 引入js -->
-    <script>// 标题
-var defaultTitle = "DoingTodo"; // 默认标题
-var title = localStorage.getItem("title"); // 获取储存
-var titler = document.getElementsByClassName("titler")[0]; // 标题容器h1
+</div>
+<!-- 引入js -->
+<script src="https://unpkg.com/jquery@3.7.1/dist/jquery.min.js"></script>
+<script>// 初始变量
+let defaultTitle = "DoingTodo",
+  title;
 let edit = undefined;
-if (title == null) {
-  // 如果不存在
+title = localStorage.getItem("title");
+// 获取储存
+if (null == title) {
+  // 如果不存在标题
   localStorage.setItem("title", defaultTitle); // 设为默认标题
   title = defaultTitle;
 }
-titler.innerText = title;
-titler.addEventListener("input", function () {
+const titler = $(".titler"); // 标题容器h1
+titler.text(title);
+titler.on("input", function () {
   //如果被修改，存储它！
-  if (titler.innerText.indexOf("\n") != -1) {
-    titler.innerText = titler.innerText.replace("\n", ""); // 禁止存在回车
+  if (titler.text().indexOf("\n") !== -1) {
+    titler.text(titler.text().replace("\n", "")); // 禁止存在回车
   }
-  localStorage.setItem("title", titler.innerText); // 存储
+  localStorage.setItem("title", titler.text()); // 存储
   // console.log("custom title!");
 });
-var Todo = function (string) {
+const Todo = function (string) {
   // Todo条目类
   // 将string解析并定义属性
-  if (typeof string == "string") {
-    var todoJson = JSON.parse(string); // 如果是字符串，进行解析
-  } else var todoJson = string; // 否则，直接赋值
+  let todoJson;
+  if ("string" == typeof string) {
+    todoJson = JSON.parse(string); // 如果是字符串，进行解析
+  } else {
+    todoJson = string; // 否则，直接赋值
+  }
   // 定义属性
-  var name = todoJson["name"], // 名称
+  let name = todoJson["name"], // 名称
     info = todoJson["info"], // 灵感
     marks = Number(todoJson["marks"]), // 优先级
     createTime = new Date(todoJson["createTime"]), // 创建日期
@@ -242,63 +153,65 @@ var Todo = function (string) {
     deadTime: deadTime,
     del: false,
     id: -1,
+    begin: false,
+    end: false,
   };
 };
 const quill = new Quill(".editor", {
   theme: "snow",
 });
-var createClose = function () {
+const createClose = function () {
   // 隐藏创建弹窗
-  document.querySelector(".createBox").style.display = "none";
+  $(".createBox").hide();
 };
-var createOpen = function () {
+const createOpen = function () {
   // 显示创建弹窗
-  document.querySelector(".createBox").style.display = "block";
+  $(".createBox").show();
   // 设置默认日期为今天
-  document.querySelector(".createDate").valueAsDate = new Date();
-  document.querySelector(".deadDate").valueAsDate = new Date();
+  $(".createDate").get(0).valueAsDate = new Date();
+  $(".deadDate").get(0).valueAsDate = new Date();
 };
-var formatDateTime = function (date) {
+const formatDateTime = function (dt) {
   // 格式化日期
-  var date = new Date(date); // 转换
-  var y = date.getFullYear(); // 年
-  var m = date.getMonth() + 1; // 月
-  var d = date.getDate(); // 日
+  const date = new Date(dt); // 转换
+  const y = date.getFullYear(); // 年
+  let m = date.getMonth() + 1; // 月
+  let d = date.getDate(); // 日
   // 补0
-  m = m < 10 ? "0" + m : m; // 月
-  d = d < 10 ? "0" + d : d; // 日
+  m = 10 > m ? "0" + m : m; // 月
+  d = 10 > d ? "0" + d : d; // 日
   return y + "-" + m + "-" + d; // 返回，穿插连字符
 };
-var sortTodos = function (a, b) {
+const sortTodos = function (a, b) {
   // 条目的排序标准（数字越小越靠前）
   /*sort的排序函数（备忘）：
-     负数：a小于b
-     0：a等于b
-    正数：a大于b*/
+       负数：a小于b
+       0：a等于b
+      正数：a大于b*/
   return a.marks - b.marks;
 };
-var showTodos = function () {
+const showTodos = function () {
   // 如果存储中todos没有被创建过，创建一个空的
-  if (localStorage.getItem("todos") == null) {
+  if (null == localStorage.getItem("todos")) {
     localStorage.setItem("todos", "[]");
   }
-  document.querySelector(".bodier").innerHTML = ``;
+  $(".bodier").html(``);
   // 读取、解析
-  var todos = JSON.parse(localStorage.getItem("todos"));
+  let todos = JSON.parse(localStorage.getItem("todos"));
   // 排序并重新储存
   todos.sort(sortTodos);
-  for (var i = 0; i < todos.length; ++i) {
+  for (let i = 0; i < todos.length; ++i) {
     if (todos[i].del) {
       // TODO 此处为软删除，为避免堆积数据，需要实现硬删除
       continue; // 如果已经被删除，跳过
     }
     // 该条目的DOM
-    var todoDom = document.createElement("div");
+    let todoDom = document.createElement("div");
     todoDom.id = i; // 设置id属性，方便删除
     todos[i].id = i;
     todoDom.className = "todo"; // 设置Class
     todoDom.innerHTML = ` 
-<div >
+<div>
   <p>${todos[i].name}</p>
   <p>创建时间：${formatDateTime(todos[i].createTime)}</p>
   <p>结束时间：${formatDateTime(todos[i].deadTime)}</p>
@@ -306,31 +219,27 @@ var showTodos = function () {
 </div>
 <div class="blank"></div>
 <div class="info">${todos[i].info}</div>`; // 条目的html
-    var editButton = document.createElement("div"); // 编辑按钮（容器）
+    let editButton = document.createElement("div"); // 编辑按钮（容器）
     editButton.innerHTML = `<svg t="1731072964474" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4279" data-darkreader-inline-fill="" width="30" height="30"><path d="M870.4 909.409524H85.333333V124.342857H653.409524a36.571429 36.571429 0 1 0 0-73.142857H48.761905a36.571429 36.571429 0 0 0-36.571429 36.571429v858.209523c0 20.187429 16.384 36.571429 36.571429 36.571429h858.209524a36.571429 36.571429 0 0 0 36.571428-36.571429V341.333333a36.571429 36.571429 0 1 0-73.142857 0v568.076191z" fill="#FFA000" p-id="4280" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #c9830c;"></path><path d="M503.710476 585.191619l510.585905-510.537143A36.571429 36.571429 0 0 0 962.608762 22.918095L452.022857 533.455238a36.571429 36.571429 0 0 0 51.687619 51.736381z" fill="#FFA000" p-id="4281" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #c9830c;"></path></svg>`;
-    var delButton = document.createElement("div"); // 删除按钮（容器）
+    let delButton = document.createElement("div"); // 删除按钮（容器）
     delButton.innerHTML = `<svg t="1731071304285" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4285" data-darkreader-inline-fill="" width="30" height="30" ><path d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z" fill="#FA596F" p-id="4286" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #970b1c;"></path></svg>`;
     // 将按钮加入条目
     todoDom.querySelector(".icons").appendChild(delButton);
     todoDom.querySelector(".icons").appendChild(editButton);
-    delButton.addEventListener("click", function () {
-      var fa = this.parentNode.parentNode.parentNode;
-      var todos = JSON.parse(localStorage.getItem("todos"));
+    $(delButton).on("click", function () {
+      let fa = this.parentNode.parentNode.parentNode;
+      let todos = JSON.parse(localStorage.getItem("todos"));
       todos[fa.id].del = true;
       localStorage.setItem("todos", JSON.stringify(todos));
       fa.remove();
     }); // 删除按钮点击事件
-    editButton.addEventListener("click", function () {
-      var todos = JSON.parse(localStorage.getItem("todos"));
-      var fa = this.parentNode.parentNode.parentNode;
-      document.querySelector(".nameText").value = todos[fa.id].name;
-      document.querySelector(".marksNumber").value = todos[fa.id].marks;
-      document.querySelector(".createDate").valueAsDate = new Date(
-        todos[fa.id].createTime,
-      );
-      document.querySelector(".deadDate").valueAsDate = new Date(
-        todos[fa.id].deadTime,
-      );
+    $(editButton).on("click", function () {
+      const todos = JSON.parse(localStorage.getItem("todos"));
+      let fa = this.parentNode.parentNode.parentNode;
+      $(".nameText").val(todos[fa.id].name);
+      $(".marksNumber").val(todos[fa.id].marks);
+      $(".createDate").get(0).valueAsDate = new Date(todos[fa.id].createTime);
+      $(".deadDate").get(0).valueAsDate = new Date(todos[fa.id].deadTime);
       createOpen();
       edit = fa.id;
     }); // 编辑按钮点击事件;
@@ -338,83 +247,90 @@ var showTodos = function () {
   }
   localStorage.setItem("todos", JSON.stringify(todos));
 };
-var addTodo = function (todo) {
-  if (localStorage.getItem("todos") == null) {
+const addTodo = function (todo) {
+  if (null == localStorage.getItem("todos")) {
     localStorage.setItem("todos", "[]");
   }
-  var todos = JSON.parse(localStorage.getItem("todos"));
+  let todos = JSON.parse(localStorage.getItem("todos"));
   todos.push(todo);
   localStorage.setItem("todos", JSON.stringify(todos));
   showTodos();
 };
-var clickAdd = function () {
+const clickAdd = function () {
   // 如果是编辑，那么将原来的删掉
   if (edit != undefined) {
-    var todos = JSON.parse(localStorage.getItem("todos"));
+    let todos = JSON.parse(localStorage.getItem("todos"));
     todos[edit].del = true;
     localStorage.setItem("todos", JSON.stringify(todos));
     edit = undefined;
   }
   // 新的todo对象
-  var todo = Todo({
-    name: document.querySelector(".nameText").value,
-    info: quill.root.innerHTML,
-    marks: document.querySelector(".marksNumber").value,
-    createTime: document.querySelector(".createDate").valueAsDate,
-    deadTime: document.querySelector(".deadDate").valueAsDate,
+  let todo = Todo({
+    name: $(".nameText").val(),
+    info: $(quill.root).html(),
+    marks: $(".marksNumber").val(),
+    createTime: $(".createDate").get(0).valueAsDate,
+    deadTime: $(".deadDate").get(0).valueAsDate,
   });
   addTodo(todo);
   createClose();
 };
-var resetTodos = function () {
+const resetTodos = function () {
   localStorage.setItem("todos", "[]");
   location.reload();
 };
-var resetAll = function () {
+const resetAll = function () {
   // 重置所有数据
   localStorage.setItem("title", defaultTitle);
   resetTodos();
 };
 // 绑定事件
-document.querySelector(".add").addEventListener("click", createOpen); // 添加
-document.querySelector(".reset").addEventListener("click", resetAll); // 重置
-document.querySelector(".delete").addEventListener("click", resetTodos); // 重置
-document.querySelector(".createOk").addEventListener("click", clickAdd); // ok
-document.querySelector(".createCancel").addEventListener("click", createClose); // cancel
+$(".add").on("click", createOpen); // 添加
+$(".reset").on("click", resetAll); // 重置
+$(".delete").on("click", resetTodos); // 重置
+$(".createOk").on("click", clickAdd); // ok
+$(".createCancel").on("click", createClose); // cancel
 showTodos();
 
 // 定期检查是否到期
 var checkBeginDate = function () {
-  if (localStorage.getItem("todos") == null) {
+  if (null == localStorage.getItem("todos")) {
     localStorage.setItem("todos", "[]");
   }
   // 读取、解析
   var todos = JSON.parse(localStorage.getItem("todos"));
   for (var i = 0; i < todos.length; ++i) {
-    if (todos[i].del) continue;
+    if (todos[i].del || todos[i].begin) continue;
     var date = new Date(todos[i].createTime);
-    if (new Date() > date) alert(`任务${todos[i].name}要开始啦！`);
+    if (new Date() > date) {
+      alert(`任务“${todos[i].name}”在今天开始！`), (todos[i].begin = true);
+    }
   }
+  localStorage.setItem("todos", JSON.stringify(todos));
 };
-// 定期检查是否到期
-var checkEndDate = function () {
-  if (localStorage.getItem("todos") == null) {
+const checkEndDate = function () {
+  if (null == localStorage.getItem("todos")) {
     localStorage.setItem("todos", "[]");
   }
   // 读取、解析
   var todos = JSON.parse(localStorage.getItem("todos"));
-  for (var i = 0; i < todos.length; ++i) {
-    if (todos[i].del) continue;
-    var date = new Date(todos[i].deadTime);
-    if (new Date() > date) alert(`任务${todos[i].name}要到期啦！`);
+  for (let i = 0; i < todos.length; ++i) {
+    if (todos[i].del || todos[i].end) continue;
+    const date = new Date(todos[i].deadTime);
+    if (new Date() > date) {
+      alert(`任务“${todos[i].name}”今天结束！`), (todos[i].end = true);
+    }
   }
+  localStorage.setItem("todos", JSON.stringify(todos));
 };
-checkBeginDate();
-checkEndDate();
-var timer = window.setInterval(function () {
+const timer = window.setInterval(function () {
   checkBeginDate();
   checkEndDate();
 }, 1000 * 60);
+$(function () {
+  checkBeginDate();
+  checkEndDate();
+});
 </script>
-  </body>
+</body>
 </html>
