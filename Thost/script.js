@@ -1,23 +1,26 @@
 // ----------------------------------------------------主功能----------------------------------
+import kv from "@vercel/kv";
+
+export async function get(key) {
+  const prefs = await kv.get(key);
+  return prefs || {};
+}
+
+export async function update(key, value) {
+  return kv.set(key, value);
+}
 // 初始变量
 let defaultTitle = "DoingTodo",
-  title;
+  title,
+  userName;
 let edit = undefined;
-title = localStorage.getItem("title");
-// 获取储存
-if (null == title) {
-  // 如果不存在标题
-  localStorage.setItem("title", defaultTitle); // 设为默认标题
-  title = defaultTitle;
-}
 const titler = $(".titler"); // 标题容器h1
-titler.text(title);
 titler.on("input", function () {
   //如果被修改，存储它！
   if (titler.text().indexOf("\n") !== -1) {
     titler.text(titler.text().replace("\n", "")); // 禁止存在回车
   }
-  localStorage.setItem("title", titler.text()); // 存储
+  update("title" + userName, titler.text()); // 存储
   // console.log("custom title!");
 });
 const Todo = function (string) {
@@ -83,12 +86,12 @@ const sortTodos = function (a, b) {
 };
 const showTodos = function () {
   // 如果存储中todos没有被创建过，创建一个空的
-  if (null == localStorage.getItem("todos")) {
-    localStorage.setItem("todos", "[]");
+  if (null == get("todos" + userName)) {
+    update("todos" + userName, "[]");
   }
   $(".bodier").html(``);
   // 读取、解析
-  let todos = JSON.parse(localStorage.getItem("todos"));
+  let todos = JSON.parse(get("todos" + userName));
   // 排序并重新储存
   todos.sort(sortTodos);
   for (let i = 0; i < todos.length; ++i) {
@@ -100,7 +103,7 @@ const showTodos = function () {
     let todoDom = document.createElement("div");
     todoDom.id = i; // 设置id属性，方便删除
     todos[i].id = i;
-    todoDom.className = "todo"; // 设置Class
+    todoDom.className = "todo"; // 设置Class+
     todoDom.innerHTML = ` 
 <div>
   <p>${todos[i].name}</p>
@@ -119,13 +122,13 @@ const showTodos = function () {
     todoDom.querySelector(".icons").appendChild(editButton);
     $(delButton).on("click", function () {
       let fa = this.parentNode.parentNode.parentNode;
-      let todos = JSON.parse(localStorage.getItem("todos"));
+      let todos = JSON.parse(get("todos" + userName));
       todos[fa.id].del = true;
-      localStorage.setItem("todos", JSON.stringify(todos));
+      update("todos" + userName, JSON.stringify(todos));
       fa.remove();
     }); // 删除按钮点击事件
     $(editButton).on("click", function () {
-      const todos = JSON.parse(localStorage.getItem("todos"));
+      const todos = JSON.parse(get("todos" + userName));
       let fa = this.parentNode.parentNode.parentNode;
       $(".nameText").val(todos[fa.id].name);
       $(".marksNumber").val(todos[fa.id].marks);
@@ -136,23 +139,23 @@ const showTodos = function () {
     }); // 编辑按钮点击事件;
     document.querySelector(".bodier").appendChild(todoDom); // 将该条目加入bodier
   }
-  localStorage.setItem("todos", JSON.stringify(todos));
+  update("todos" + userName, JSON.stringify(todos));
 };
 const addTodo = function (todo) {
-  if (null == localStorage.getItem("todos")) {
-    localStorage.setItem("todos", "[]");
+  if (null == get("todos" + userName)) {
+    update("todos" + userName, "[]");
   }
-  let todos = JSON.parse(localStorage.getItem("todos"));
+  let todos = JSON.parse(get("todos" + userName));
   todos.push(todo);
-  localStorage.setItem("todos", JSON.stringify(todos));
+  update("todos" + userName, JSON.stringify(todos));
   showTodos();
 };
 const clickAdd = function () {
   // 如果是编辑，那么将原来的删掉
   if (edit != undefined) {
-    let todos = JSON.parse(localStorage.getItem("todos"));
+    let todos = JSON.parse(get("todos" + userName));
     todos[edit].del = true;
-    localStorage.setItem("todos", JSON.stringify(todos));
+    update("todos" + userName, JSON.stringify(todos));
     edit = undefined;
   }
   // 新的todo对象
@@ -167,12 +170,12 @@ const clickAdd = function () {
   createClose();
 };
 const resetTodos = function () {
-  localStorage.setItem("todos", "[]");
+  update("todos" + userName, "[]");
   location.reload();
 };
 const resetAll = function () {
   // 重置所有数据
-  localStorage.setItem("title", defaultTitle);
+  update("title" + userName, defaultTitle);
   resetTodos();
 };
 // 绑定事件
@@ -185,11 +188,11 @@ showTodos();
 
 // 定期检查是否到期
 var checkBeginDate = function () {
-  if (null == localStorage.getItem("todos")) {
-    localStorage.setItem("todos", "[]");
+  if (null == get("todos" + userName)) {
+    update("todos" + userName, "[]");
   }
   // 读取、解析
-  var todos = JSON.parse(localStorage.getItem("todos"));
+  var todos = JSON.parse(get("todos" + userName));
   for (var i = 0; i < todos.length; ++i) {
     if (todos[i].del || todos[i].begin) continue;
     var date = new Date(todos[i].createTime);
@@ -197,14 +200,14 @@ var checkBeginDate = function () {
       alert(`任务“${todos[i].name}”在今天开始！`), (todos[i].begin = true);
     }
   }
-  localStorage.setItem("todos", JSON.stringify(todos));
+  update("todos" + userName, JSON.stringify(todos));
 };
 const checkEndDate = function () {
-  if (null == localStorage.getItem("todos")) {
-    localStorage.setItem("todos", "[]");
+  if (null == get("todos" + userName)) {
+    update("todos" + userName, "[]");
   }
   // 读取、解析
-  var todos = JSON.parse(localStorage.getItem("todos"));
+  var todos = JSON.parse(get("todos" + userName));
   for (let i = 0; i < todos.length; ++i) {
     if (todos[i].del || todos[i].end) continue;
     const date = new Date(todos[i].deadTime);
@@ -212,15 +215,31 @@ const checkEndDate = function () {
       alert(`任务“${todos[i].name}”今天结束！`), (todos[i].end = true);
     }
   }
-  localStorage.setItem("todos", JSON.stringify(todos));
+  update("todos" + userName, JSON.stringify(todos));
 };
 const timer = window.setInterval(function () {
   checkBeginDate();
   checkEndDate();
 }, 1000 * 60);
+const getQueryString = function (name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
+};
 $(function () {
   checkBeginDate();
   checkEndDate();
+  userName = getQueryString("user");
+  title = get("title" + userName);
+  // 获取储存
+  if (null == title) {
+    // 如果不存在标题
+    update("title" + userName, defaultTitle); // 设为默认标题
+    title = defaultTitle;
+  }
+
+  titler.text(title);
 });
 
 // ----------------------------------------插件系统---------------------------------------------------
