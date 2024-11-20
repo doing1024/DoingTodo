@@ -1,13 +1,28 @@
 // ----------------------------------------------------主功能----------------------------------
-import kv from "@vercel/kv";
-
-export async function get(key) {
-  const prefs = await kv.get(key);
-  return prefs || null;
+export async function get(key = undefined) {
+  // 获取数据
+  let resultData;
+  $.ajax({
+    url: "https://textdb.online/doingtodo37012", // 免费 文本数据库
+    dataType: "text",
+    success: function (result) {
+      resultData = result;
+    },
+  });
+  resultData = JSON.parse(resultData);
+  if (key == undefined) return resultData || {};
+  return resultData[key] || null;
 }
 
 export async function update(key, value) {
-  return kv.set(key, value);
+  // 写入数据
+  let Data = get();
+  Data[key] = value;
+  let url = `https://api.textdb.online/update/?key=doingtodo37012&value=${encodeURIComponent(JSON.stringify(Data))}`;
+  $.ajax({
+    url: url, // 免费 文本数据库
+    dataType: "text",
+  });
 }
 // 初始变量
 let defaultTitle = "DoingTodo",
