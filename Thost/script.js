@@ -1,5 +1,5 @@
 // ----------------------------------------------------主功能----------------------------------
-export async function get(key = undefined) {
+function get(key = undefined) {
   // 获取数据
   let resultData;
   $.ajax({
@@ -14,7 +14,7 @@ export async function get(key = undefined) {
   return resultData[key] || null;
 }
 
-export async function update(key, value) {
+function update(key, value) {
   // 写入数据
   let Data = get();
   Data[key] = value;
