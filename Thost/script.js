@@ -1,24 +1,23 @@
 // ----------------------------------------------------主功能----------------------------------
-function get(key = undefined) {
+function get(key) {
   // 获取数据
   let resultData;
+  const pushDataOut = function (data) {
+    resultData = data;
+  };
   $.ajax({
-    url: "https://textdb.online/doingtodo37012", // 免费 文本数据库
+    url: "https://todoapi.doing1024.us.kg/get/" + key, // 免费 文本数据库
     dataType: "text",
     success: function (result) {
-      resultData = result;
+      pushDataOut(result);
     },
   });
-  resultData = JSON.parse(resultData);
-  if (key == undefined) return resultData || {};
-  return resultData[key] || null;
+  return resultData || null;
 }
 
 function update(key, value) {
   // 写入数据
-  let Data = get();
-  Data[key] = value;
-  let url = `https://api.textdb.online/update/?key=doingtodo37012&value=${encodeURIComponent(JSON.stringify(Data))}`;
+  let url = `https://todoapi.doing1024.us.kg/set/${key}/${encodeURIComponent(JSON.stringify(value))}`;
   $.ajax({
     url: url, // 免费 文本数据库
     dataType: "text",
