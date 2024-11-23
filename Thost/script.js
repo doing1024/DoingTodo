@@ -6,7 +6,7 @@ function get(key) {
     resultData = data;
   };
   $.ajax({
-    url: "https://todoapi.doing1024.us.kg/get/" + key, // 免费 文本数据库
+    url: "https://todoapi.doing1024.us.kg/get/" + key,
     dataType: "text",
     success: function (result) {
       pushDataOut(result);
@@ -19,7 +19,7 @@ function update(key, value) {
   // 写入数据
   let url = `https://todoapi.doing1024.us.kg/set/${key}/${encodeURIComponent(JSON.stringify(value))}`;
   $.ajax({
-    url: url, // 免费 文本数据库
+    url: url,
     dataType: "text",
   });
 }
@@ -235,16 +235,21 @@ const timer = window.setInterval(function () {
   checkBeginDate();
   checkEndDate();
 }, 1000 * 60);
-const getQueryString = function (name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null) return unescape(r[2]);
-  return null;
+const getQueryVariable = function (variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  }
+  return false;
 };
 $(function () {
   checkBeginDate();
   checkEndDate();
-  userName = getQueryString("user");
+  userName = getQueryVariable("user");
   title = get("title" + userName);
   // 获取储存
   if (null == title) {
