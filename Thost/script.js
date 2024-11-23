@@ -247,9 +247,9 @@ const getQueryVariable = function (variable) {
   return false;
 };
 $(function () {
+  userName = getQueryVariable("user");
   checkBeginDate();
   checkEndDate();
-  userName = getQueryVariable("user");
   title = get("title" + userName);
   // 获取储存
   if (null == title) {
