@@ -349,9 +349,7 @@
         currentUser = urlParams.get("user");
 
         if (!currentUser) {
-          alert(
-            "您使用的是联机版本且没有指定用户，如果您需要指定用户，添加 “?user=用户名称” 到网址末尾",
-          );
+          window.location.href = `https://todo.doing1024.us.kg/`;
           return;
         }
 
