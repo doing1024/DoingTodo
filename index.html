@@ -173,28 +173,18 @@
   <body>
     <div class="loginBox">
       <h2>登录</h2>
-      <form action="">
-        <div class="item">
-          <input type="text" id="name" />
-          <label for="">用户名</label>
-        </div>
-        <div>不想登录？使用<a href="/one/">本地版</a></div>
-        <button class="btn">
-          submit
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </form>
+      <div class="item">
+        <input type="text" id="name" />
+        <label for="">用户名</label>
+      </div>
+      <div>不想登录？使用<a href="/one/">本地版</a></div>
+      <button class="btn">submit</button>
     </div>
     <script>
       document
         .getElementsByClassName("btn")[0]
         .addEventListener("click", function () {
-          window.location.href =
-            "https://todo.doing1024.us.kg/host/?user=" +
-            document.getElementById("name").value;
+          window.location.href = `https://todo.doing1024.us.kg/host/?user=${document.getElementById("name").value}`;
         });
     </script>
   </body>
