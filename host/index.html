@@ -235,7 +235,8 @@
           padding: 8px 15px;
         }
 
-        input, button {
+        input,
+        button {
           min-height: 44px;
         }
       }
@@ -294,11 +295,11 @@
 
     <script>
       $(document).ready(function () {
-        function showLoading(text = '加载中...') {
-  if (!document.getElementById('loadingDiv')) {
-    const div = document.createElement('div');
-    div.id = 'loadingDiv';
-    div.innerHTML = `
+        function showLoading(text = "加载中...") {
+          if (!document.getElementById("loadingDiv")) {
+            const div = document.createElement("div");
+            div.id = "loadingDiv";
+            div.innerHTML = `
       <style>
         #loadingDiv {
           position: fixed;
@@ -331,14 +332,14 @@
         }
       </style>
     `;
-    document.body.appendChild(div);
-  }
-}
+            document.body.appendChild(div);
+          }
+        }
 
-function hideLoading() {
-  const div = document.getElementById('loadingDiv');
-  if (div) div.remove();
-}
+        function hideLoading() {
+          const div = document.getElementById("loadingDiv");
+          if (div) div.remove();
+        }
         let editingItemId = null;
         let quill, editQuill;
         let currentUser;
@@ -435,6 +436,7 @@ function hideLoading() {
             description: quill.root.innerHTML,
           };
           addTodoItem(newItem);
+          saveTodos();
           $("#addModal").hide();
           // Clear modal inputs
           $("#addModal input").val("");
@@ -477,7 +479,6 @@ function hideLoading() {
                 `;
           $("#todoList").append(todoItem);
           sortTodoItems();
-          saveTodos();
         }
 
         // Update existing todo item
@@ -549,6 +550,7 @@ function hideLoading() {
         getData("todos").then((savedTodos) => {
           if (savedTodos) {
             savedTodos.forEach(addTodoItem);
+            saveTodos();
           }
           hideLoading();
         });
