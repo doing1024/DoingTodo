@@ -146,6 +146,99 @@
         height: 200px;
         margin-bottom: 10px;
       }
+
+      @media screen and (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        .todo-item {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .todo-item .content {
+          order: 1;
+        }
+
+        .todo-item .priority {
+          order: 2;
+          width: 100%;
+        }
+
+        .todo-item .description {
+          order: 3;
+          width: 100%;
+        }
+
+        .todo-item .actions {
+          order: 4;
+          justify-content: flex-end;
+        }
+
+        .modal-content {
+          width: 95%;
+          margin: 5% auto;
+        }
+
+        .header {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+
+        .header h1 {
+          margin-bottom: 10px;
+        }
+
+        #editor-container {
+          height: 150px;
+        }
+
+        .ql-toolbar {
+          flex-wrap: wrap;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        .todo-item {
+          padding: 10px;
+        }
+
+        .todo-item .dates {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .todo-item input[type="date"] {
+          width: 100%;
+        }
+
+        .modal-content {
+          padding: 15px;
+        }
+
+        .header button {
+          width: 100%;
+          margin: 5px 0;
+        }
+      }
+
+      @media (hover: none) {
+        .header button,
+        .todo-item .actions button {
+          padding: 8px 15px;
+        }
+
+        input, button {
+          min-height: 44px;
+        }
+      }
     </style>
   </head>
   <body>
