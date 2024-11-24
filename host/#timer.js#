@@ -1,0 +1,6 @@
+const { checkBeginDate, checkEndDate } = require("./script");
+
+const timer = window.setInterval(function () {
+    checkBeginDate();
+    checkEndDate();
+}, 1000 * 60);
