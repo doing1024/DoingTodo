@@ -1,113 +1,389 @@
 <!doctype html>
-<html lang="zh-cn">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta charset="utf-8"/>
-    <title>DoingTodo——让想法涌现的Todo</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-<!-- 头部 -->
-<div class="header">
-    <!-- 可编辑的标题 -->
-    <h1 class="titler" contenteditable="true"></h1>
-    <!-- 加号图标 -->
-    <div class="add">
-        <svg
-                width="30"
-                height="30"
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                    d="M514.048 62.464q93.184 0 175.616 35.328t143.872 96.768 96.768 143.872 35.328 175.616q0 94.208-35.328 176.128t-96.768 143.36-143.872 96.768-175.616 35.328q-94.208 0-176.64-35.328t-143.872-96.768-96.768-143.36-35.328-176.128q0-93.184 35.328-175.616t96.768-143.872 143.872-96.768 176.64-35.328zM772.096 576.512q26.624 0 45.056-18.944t18.432-45.568-18.432-45.056-45.056-18.432l-192.512 0 0-192.512q0-26.624-18.944-45.568t-45.568-18.944-45.056 18.944-18.432 45.568l0 192.512-192.512 0q-26.624 0-45.056 18.432t-18.432 45.056 18.432 45.568 45.056 18.944l192.512 0 0 191.488q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568l0-191.488 192.512 0z"
-            ></path>
-        </svg>
-    </div>
-    <div class="reset">
-        <svg
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                data-darkreader-inline-fill=""
-                width="30"
-                height="30"
-        >
-            <path
-                    d="M715.7248 241.6896l-59.32032 73.04704 308.70016 28.62592-92.27776-295.168-73.3696 90.40384a464.29696 464.29696 0 0 0-275.9936-90.40384c-256.768 0-464.96256 207.616-464.96256 463.6672 0 256.11776 208.19456 463.6672 464.96256 463.6672 192.61952 0.16896 365.40928-118.41536 434.52416-298.20416a66.18112 66.18112 0 0 0-38.272-85.48352c-34.24256-13.08672-72.62208 4.00384-85.80096 38.20544-49.36192 128.45056-172.78464 213.17632-310.38976 213.05856-183.45984 0-332.20608-148.29568-332.20608-331.2384 0-182.87616 148.74624-331.17696 332.20608-331.17696 70.1952-0.00512 136.832 21.75488 192.19968 60.99968"
-                    fill=""
-            ></path>
-        </svg>
-    </div>
-    <div class="delete">
-        <svg
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                data-darkreader-inline-fill=""
-                width="30"
-                height="30"
-        >
-            <path
-                    d="M630.09 151.91V62.16H361.84v89.74H93.6v134.62h89.41v673.11h625.93v-673.1h89.42V151.91H630.09zM361.84 869.89h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z m178.84 0h-89.43V286.53h89.43v583.36z"
-                    fill="#FA596F"
-                    data-darkreader-inline-fill=""
-                    style="--darkreader-inline-fill: #970b1c;"
-            ></path>
-        </svg>
-    </div>
-</div>
-<!-- 装载条目的容器 -->
-<div class="bodier"></div>
-<!-- 页尾 -->
-<div class="footer">
-    <a href="https://todo.doing1024.us.kg/">DoingTodo</a><br/>
-    Made by <a href="https://github.com/doing1024">Doing</a>
-</div>
-<!-- 创建/编辑时的弹窗 -->
-<div class="createBox">
-    <div class="createForm">
-        <div class="name"><label>
-            名称：
-            <input type="text" class="nameText"/>
-        </label></div>
-        <div class="marks">
-            <label>
-                优先级（数字越小优先级越高）
-                <input
-                        type="number"
-                        class="marksNumber"
-                        value="0"
-                />
-            </label>
-        </div>
-        <div class="create">
-            <label>
-                开始日期：
-                <input type="date" class="createDate"/>
-            </label>
-        </div>
-        <div class="deadline">
-            <label>
-                结束日期：
-                <input type="date" class="deadDate"/>
-            </label>
-        </div>
-        <script src="https://unpkg.com/quill@2.0.2/dist/quill.js"></script>
-        <link
-                href="https://unpkg.com/quill@2.0.2/dist/quill.snow.css"
-                rel="stylesheet"
-        />
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DoingTodo</title>
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/quill/2.0.0-dev.4/quill.min.js"></script>
+    <link
+      href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/quill/2.0.0-dev.4/quill.snow.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        <div class="editor"></div>
-        <div class="button">
-            <button class="createOk">确认
-            </button
-            >
-            <button class="createCancel">取消</button>
+      body {
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .header h1 {
+        color: #fff;
+        outline: none;
+      }
+
+      .header h1:focus {
+        border-bottom: 1px solid #fff;
+      }
+
+      .header button {
+        padding: 5px 15px;
+        margin-left: 10px;
+        background: #333;
+        border: 1px solid #444;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .todo-list {
+        margin-top: 20px;
+      }
+
+      .todo-item {
+        display: grid;
+        grid-template-columns: 100px 1fr 300px auto;
+        gap: 10px;
+        padding: 15px;
+        border: 1px solid #333;
+        margin-bottom: 10px;
+      }
+
+      .todo-item .dates {
+        font-size: 0.9em;
+        color: #888;
+      }
+
+      .todo-item input[type="text"],
+      .todo-item input[type="number"],
+      .todo-item input[type="date"] {
+        background: #222;
+        border: 1px solid #444;
+        color: #fff;
+        padding: 5px;
+      }
+
+      .todo-item .actions {
+        display: flex;
+        gap: 5px;
+      }
+
+      .todo-item .actions button {
+        padding: 5px 10px;
+        background: #333;
+        border: 1px solid #444;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #666;
+        font-size: 0.8em;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #222;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #444;
+        width: 80%;
+        max-width: 500px;
+      }
+
+      .modal-content input,
+      .modal-content textarea {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px;
+        background: #333;
+        border: 1px solid #444;
+        color: #fff;
+      }
+
+      .modal-content button {
+        padding: 5px 15px;
+        margin-right: 10px;
+        background: #333;
+        border: 1px solid #444;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      #editor-container {
+        height: 200px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 id="title" contenteditable="true">DoingTodo</h1>
+        <div>
+          <button id="addBtn">添加项目</button>
+          <button id="resetBtn">重置</button>
         </div>
+      </div>
+
+      <div class="todo-list" id="todoList">
+        <!-- Todo items will be inserted here -->
+      </div>
+
+      <div class="footer">Powered by DoingTodo</div>
     </div>
-</div>
-<!-- 引入js -->
-<script src="https://unpkg.com/jquery@3.7.1/dist/jquery.min.js"></script>
-<script src="script.js"></script>
-</body>
+
+    <div id="addModal" class="modal">
+      <div class="modal-content">
+        <h2>添加新项目</h2>
+        <input type="text" id="newItemTitle" placeholder="条目名称" />
+        <input
+          type="number"
+          id="newItemPriority"
+          placeholder="优先级（数字）"
+        />
+        <input type="date" id="newItemStartDate" />
+        <input type="date" id="newItemEndDate" />
+        <div id="editor-container"></div>
+        <button id="saveNewItem">保存</button>
+        <button id="closeAddModal">取消</button>
+      </div>
+    </div>
+
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <h2>编辑项目</h2>
+        <input type="text" id="editItemTitle" placeholder="条目名称" />
+        <input
+          type="number"
+          id="editItemPriority"
+          placeholder="优先级（数字）"
+        />
+        <input type="date" id="editItemStartDate" />
+        <input type="date" id="editItemEndDate" />
+        <div id="edit-editor-container"></div>
+        <button id="saveEditItem">保存</button>
+        <button id="closeEditModal">取消</button>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        let editingItemId = null;
+        let quill, editQuill;
+
+        // Initialize Quill editors
+        quill = new Quill("#editor-container", {
+          theme: "snow",
+        });
+        editQuill = new Quill("#edit-editor-container", {
+          theme: "snow",
+        });
+
+        // Load title from localStorage
+        const savedTitle = localStorage.getItem("todoTitle");
+        if (savedTitle) {
+          $("#title").text(savedTitle);
+        }
+
+        // Save title to localStorage when changed
+        $("#title").on("input", function () {
+          localStorage.setItem("todoTitle", $(this).text());
+        });
+
+        // Show add modal when add button is clicked
+        $("#addBtn").click(function () {
+          $("#addModal").show();
+          // Set default dates to today
+          const today = new Date().toISOString().split("T")[0];
+          $("#newItemStartDate").val(today);
+          $("#newItemEndDate").val(today);
+        });
+
+        // Close add modal when close button is clicked
+        $("#closeAddModal").click(function () {
+          $("#addModal").hide();
+        });
+
+        // Show edit modal when edit button is clicked
+        $(document).on("click", ".editBtn", function () {
+          const itemId = $(this).closest(".todo-item").attr("id");
+          editingItemId = itemId;
+          const item = $(`#${itemId}`);
+          $("#editItemTitle").val(item.find(".title").val());
+          $("#editItemPriority").val(item.find(".priority").val());
+          $("#editItemStartDate").val(item.find(".start-date").val());
+          $("#editItemEndDate").val(item.find(".end-date").val());
+          editQuill.root.innerHTML = item.find(".description").html();
+          $("#editModal").show();
+        });
+
+        // Close edit modal when close button is clicked
+        $("#closeEditModal").click(function () {
+          $("#editModal").hide();
+          editingItemId = null;
+        });
+
+        // Save new item when save button in add modal is clicked
+        $("#saveNewItem").click(function () {
+          const newItem = {
+            id: Date.now(),
+            title: $("#newItemTitle").val(),
+            priority: parseInt($("#newItemPriority").val()) || 0,
+            startDate: $("#newItemStartDate").val(),
+            endDate: $("#newItemEndDate").val(),
+            description: quill.root.innerHTML,
+          };
+          addTodoItem(newItem);
+          $("#addModal").hide();
+          // Clear modal inputs
+          $("#addModal input").val("");
+          quill.setText("");
+        });
+
+        // Save edited item when save button in edit modal is clicked
+        $("#saveEditItem").click(function () {
+          const editedItem = {
+            id: editingItemId,
+            title: $("#editItemTitle").val(),
+            priority: parseInt($("#editItemPriority").val()) || 0,
+            startDate: $("#editItemStartDate").val(),
+            endDate: $("#editItemEndDate").val(),
+            description: editQuill.root.innerHTML,
+          };
+          updateTodoItem(editedItem);
+          $("#editModal").hide();
+          editingItemId = null;
+        });
+
+        // Add new todo item
+        function addTodoItem(item) {
+          const todoItem = `
+                    <div class="todo-item" id="${item.id}" data-priority="${item.priority}">
+                        <input type="number" class="priority" value="${item.priority}" placeholder="优先级">
+                        <div class="content">
+                            <input type="text" class="title" value="${item.title}" placeholder="条目名称">
+                            <div class="dates">
+                                开始日期：<input type="date" class="start-date" value="${item.startDate}"><br>
+                                结束日期：<input type="date" class="end-date" value="${item.endDate}">
+                            </div>
+                        </div>
+                        <div class="description">${item.description}</div>
+                        <div class="actions">
+                            <button class="editBtn">编辑</button>
+                            <button class="deleteBtn">删除</button>
+                        </div>
+                    </div>
+                `;
+          $("#todoList").append(todoItem);
+          sortTodoItems();
+          saveTodos();
+        }
+
+        // Update existing todo item
+        function updateTodoItem(item) {
+          const todoItem = $(`#${item.id}`);
+          todoItem.find(".priority").val(item.priority);
+          todoItem.find(".title").val(item.title);
+          todoItem.find(".start-date").val(item.startDate);
+          todoItem.find(".end-date").val(item.endDate);
+          todoItem.find(".description").html(item.description);
+          todoItem.attr("data-priority", item.priority);
+          sortTodoItems();
+          saveTodos();
+        }
+
+        // Delete todo item
+        $(document).on("click", ".deleteBtn", function () {
+          $(this).closest(".todo-item").remove();
+          saveTodos();
+        });
+
+        // Sort todo items by priority
+        function sortTodoItems() {
+          const todoItems = $(".todo-item").get();
+          todoItems.sort(function (a, b) {
+            const priorityA = parseInt($(a).data("priority"));
+            const priorityB = parseInt($(b).data("priority"));
+            return priorityB - priorityA;
+          });
+          $("#todoList").empty().append(todoItems);
+        }
+
+        // Clear all items
+        $("#resetBtn").click(function () {
+          $("#todoList").empty();
+          saveTodos();
+        });
+
+        // Save to localStorage whenever there's a change
+        $(document).on("change", ".todo-item input", function () {
+          saveTodos();
+        });
+
+        // Re-sort items when priority is changed
+        $(document).on("change", ".todo-item .priority", function () {
+          const item = $(this).closest(".todo-item");
+          item.attr("data-priority", $(this).val());
+          sortTodoItems();
+          saveTodos();
+        });
+
+        // Save todos to localStorage
+        function saveTodos() {
+          const todos = [];
+          $(".todo-item").each(function () {
+            todos.push({
+              id: $(this).attr("id"),
+              priority: $(this).find(".priority").val(),
+              title: $(this).find(".title").val(),
+              startDate: $(this).find(".start-date").val(),
+              endDate: $(this).find(".end-date").val(),
+              description: $(this).find(".description").html(),
+            });
+          });
+          localStorage.setItem("todos", JSON.stringify(todos));
+        }
+
+        // Load from localStorage on page load
+        const savedTodos = localStorage.getItem("todos");
+        if (savedTodos) {
+          const todos = JSON.parse(savedTodos);
+          todos.forEach(addTodoItem);
+        }
+      });
+    </script>
+  </body>
 </html>
