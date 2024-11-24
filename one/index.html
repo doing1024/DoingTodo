@@ -146,7 +146,113 @@
         height: 200px;
         margin-bottom: 10px;
       }
-    </style>
+/* 修改现有的todo-item样式 */
+.todo-item {
+  display: grid;
+  grid-template-columns: 100px 1fr 300px auto;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid #333;
+  margin-bottom: 10px;
+}
+
+/* 添加媒体查询适配移动设备 */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .todo-item {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .todo-item .content {
+    order: 1;
+  }
+
+  .todo-item .priority {
+    order: 2;
+    width: 100%;
+  }
+
+  .todo-item .description {
+    order: 3;
+    width: 100%;
+  }
+
+  .todo-item .actions {
+    order: 4;
+    justify-content: flex-end;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 5% auto;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .header h1 {
+    margin-bottom: 10px;
+  }
+
+  #editor-container {
+    height: 150px;
+  }
+
+  .ql-toolbar {
+    flex-wrap: wrap;
+  }
+}
+
+/* 添加更小屏幕的适配 */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .todo-item {
+    padding: 10px;
+  }
+
+  .todo-item .dates {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .todo-item input[type="date"] {
+    width: 100%;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .header button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+/* 添加触摸设备的优化 */
+@media (hover: none) {
+  .header button,
+  .todo-item .actions button {
+    padding: 8px 15px; /* 增大按钮点击区域 */
+      }
+
+      input,
+      button {
+        min-height: 44px; /* 确保触摸目标足够大 */
+  }
+}
+</style>
   </head>
   <body>
     <div class="container">
