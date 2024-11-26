@@ -10,16 +10,19 @@
       href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/quill/2.0.0-dev.4/quill.snow.min.css"
       rel="stylesheet"
     />
+
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-      button {
-        border: 0px;
-      }
 
+      .header button,
+      .todo-item .actions button {
+        border: 0;
+        background: none;
+      }
       body {
         font-family: Arial, sans-serif;
         background: #000;
@@ -52,8 +55,6 @@
       .header button {
         padding: 5px 15px;
         margin-left: 10px;
-        background: #333;
-        border: 1px solid #444;
         color: #fff;
         cursor: pointer;
       }
@@ -92,8 +93,6 @@
 
       .todo-item .actions button {
         padding: 5px 10px;
-        background: #333;
-        border: 1px solid #444;
         color: #fff;
         cursor: pointer;
       }
@@ -149,17 +148,7 @@
         height: 200px;
         margin-bottom: 10px;
       }
-      /* 修改现有的todo-item样式 */
-      .todo-item {
-        display: grid;
-        grid-template-columns: 100px 1fr 300px auto;
-        gap: 10px;
-        padding: 15px;
-        border: 1px solid #333;
-        margin-bottom: 10px;
-      }
 
-      /* 添加媒体查询适配移动设备 */
       @media screen and (max-width: 768px) {
         .container {
           padding: 10px;
@@ -213,7 +202,6 @@
         }
       }
 
-      /* 添加更小屏幕的适配 */
       @media screen and (max-width: 480px) {
         body {
           padding: 10px;
@@ -243,16 +231,15 @@
         }
       }
 
-      /* 添加触摸设备的优化 */
       @media (hover: none) {
         .header button,
         .todo-item .actions button {
-          padding: 8px 15px; /* 增大按钮点击区域 */
+          padding: 8px 15px;
         }
 
         input,
         button {
-          min-height: 44px; /* 确保触摸目标足够大 */
+          min-height: 44px;
         }
       }
     </style>
