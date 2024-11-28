@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DoingTodo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .header h1 {
+        color: #fff;
+        outline: none;
+      }
+
+      .header h1:focus {
+        border-bottom: 1px solid #fff;
+      }
+</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 id="title" contenteditable="true">关于DoingTodo</h1>
+      </div>
+      <div class="footer">Powered by <a href="https://github.com/doing1024">Doing</a></div>
+    </div>
+  </body>
+</html>
