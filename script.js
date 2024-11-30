@@ -50,7 +50,7 @@ $(document).ready(function () {
 
   // Get current user from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
-  currentUser = urlParams.get("user");
+    currentUser = urlParams.get("version")=="host"?urlParams.get("user"):"one";
 
   if (!currentUser) {
     window.location.href = `https://todo.doing1024.us.kg/`;
@@ -89,8 +89,8 @@ $(document).ready(function () {
   async function setDataLocal(key) {
     localStorage.setItem(key);
   }
-  var getData = urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
-  var setData = urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
+  const getData = urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
+  const setData = urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
   // Load title from API
   getData("todoTitle").then((savedTitle) => {
     if (savedTitle) {
