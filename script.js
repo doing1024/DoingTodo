@@ -87,7 +87,7 @@ $(document).ready(function () {
     return data ? JSON.parse(data) : null;
   }
     async function setDataLocal(key,value) {
-	localStorage.setItem(key,value);
+	localStorage.setItem(key,JSON.stringify(value));
   }
   const getData = urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
   const setData = urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
