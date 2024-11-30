@@ -50,7 +50,8 @@ $(document).ready(function () {
 
   // Get current user from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
-    currentUser = urlParams.get("version")=="host"?urlParams.get("user"):"one";
+  currentUser =
+    urlParams.get("version") == "host" ? urlParams.get("user") : "one";
 
   if (!currentUser) {
     window.location.href = `https://todo.doing1024.us.kg/`;
@@ -86,11 +87,13 @@ $(document).ready(function () {
     var data = localStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   }
-    async function setDataLocal(key,value) {
-	localStorage.setItem(key,JSON.stringify(value));
+  async function setDataLocal(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
   }
-  const getData = urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
-  const setData = urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
+  const getData =
+    urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
+  const setData =
+    urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
   // Load title from API
   getData("todoTitle").then((savedTitle) => {
     if (savedTitle) {
@@ -207,8 +210,10 @@ $(document).ready(function () {
 
   // Delete todo item
   $(document).on("click", ".deleteBtn", function () {
-    $(this).closest(".todo-item").remove();
-    saveTodos();
+    if (confirm("确认要删除此条目吗？此操作不可逆！")) {
+      $(this).closest(".todo-item").remove();
+      saveTodos();
+    }
   });
 
   // Sort todo items by priority
@@ -224,8 +229,10 @@ $(document).ready(function () {
 
   // Clear all items
   $("#clearBtn").click(function () {
-    $("#todoList").empty();
-    saveTodos();
+    if (confirm("确认清除所有条目吗？此操作不可逆！")) {
+      $("#todoList").empty();
+      saveTodos();
+    }
   });
 
   // Save to API whenever there's a change
