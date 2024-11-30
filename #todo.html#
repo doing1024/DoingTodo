@@ -16,8 +16,10 @@
         padding: 0;
         box-sizing: border-box;
       }
-      input,button{
-          border-radius: 10px;}
+      input,
+      button {
+        border-radius: 10px;
+      }
       a {
         text-decoration: none;
       }
