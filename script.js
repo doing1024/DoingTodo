@@ -86,8 +86,8 @@ $(document).ready(function () {
     var data = localStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   }
-  async function setDataLocal(key) {
-    localStorage.setItem(key);
+    async function setDataLocal(key,value) {
+	localStorage.setItem(key,value);
   }
   const getData = urlParams.get("version") == "host" ? getDataAPI : getDataLocal;
   const setData = urlParams.get("version") == "host" ? setDataAPI : setDataLocal;
