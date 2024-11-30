@@ -86,7 +86,7 @@
         border-radius: 5px;
         color: #000;
         background: #fff;
-        box-shadow: 
+        box-shadow:
           0 0 5px 0 rgba(255, 255, 255, 0.5),
           0 0 25px 0 rgba(255, 255, 255, 0.3),
           0 0 50px 0 rgba(255, 255, 255, 0.2),
@@ -182,14 +182,14 @@
       <div class="item">
         <input type="text" id="name" placeholder="用户名" />
       </div>
-      <div>不用同步数据？使用<a href="/one/">本地版</a></div>
+      <div>不用同步数据？使用<a href="/todo.html?version=one">本地版</a></div>
       <button class="btn">登录</button>
     </div>
     <script>
       document
         .getElementsByClassName("btn")[0]
         .addEventListener("click", function () {
-          window.location.href = `https://todo.doing1024.us.kg/host/?user=${document.getElementById("name").value}`;
+          window.location.href = `https://todo.doing1024.us.kg/todo.html?version=host&user=${document.getElementById("name").value}`;
         });
     </script>
   </body>
